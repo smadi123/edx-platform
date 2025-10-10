@@ -636,7 +636,7 @@ def prepare_runtime_for_user(
         'call_to_action': CallToActionService(),
         'publish': EventPublishingService(user, course_id, track_function),
         'enrollments': EnrollmentsService(),
-        'video_config': VideoConfigService(course_id=course_id),
+        'video_config': VideoConfigService(),
     }
 
     runtime.get_block_for_descriptor = inner_get_block
