@@ -161,6 +161,7 @@ def get_test_system(
         'cache': CacheService(DoNothingCache()),
         'field-data': DictFieldData({}),
         'sandbox': SandboxService(contentstore, course_id),
+        'video_config': VideoConfigService(),
     }
 
     descriptor_system.get_block_for_descriptor = get_block  # lint-amnesty, pylint: disable=attribute-defined-outside-init
@@ -216,6 +217,7 @@ def prepare_block_runtime(
         'cache': CacheService(DoNothingCache()),
         'field-data': DictFieldData({}),
         'sandbox': SandboxService(contentstore, course_id),
+        'video_config': VideoConfigService(),
     }
 
     if add_overrides:
