@@ -1870,7 +1870,7 @@ class BasePublicVideoXBlockView(View):
             )
 
             # Block must be marked as public to be viewed
-            if not is_public_sharing_enabled(video_block):
+            if not is_public_sharing_enabled(video_block.location, video_block.public_access):
                 raise Http404("Video not found.")
 
         return course, video_block

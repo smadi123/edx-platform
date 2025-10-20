@@ -27,31 +27,32 @@ def get_public_video_url(usage_id: UsageKey) -> str:
 
 
 @staticmethod
-def is_public_sharing_enabled(video_block):
+def is_public_sharing_enabled(usage_key: UsageKey, public_access: bool) -> bool:
     """
     Check if public sharing is enabled for a video.
 
     Args:
-        video_block: The video XBlock instance
+        usage_key: The usage key of the video block
+        public_access: Whether the video block has public access enabled
 
     Returns:
         bool: True if public sharing is enabled, False otherwise
     """
-    if not video_block.context_key.is_course:
+    if not usage_key.context_key.is_course:
         return False  # Only courses support this feature (not libraries)
 
     try:
         # Video share feature must be enabled for sharing settings to take effect
-        feature_enabled = PUBLIC_VIDEO_SHARE.is_enabled(video_block.context_key)
+        feature_enabled = PUBLIC_VIDEO_SHARE.is_enabled(usage_key.context_key)
     except Exception as err:  # pylint: disable=broad-except
-        log.exception(f"Error retrieving course for course ID: {video_block.context_key}")
+        log.exception(f"Error retrieving course for course ID: {usage_key.context_key}")
         return False
 
     if not feature_enabled:
         return False
 
     # Check if the course specifies a general setting
-    course_video_sharing_option = get_course_video_sharing_override(video_block)
+    course_video_sharing_option = get_course_video_sharing_override(usage_key)
 
     # Course can override all videos to be shared
     if course_video_sharing_option == COURSE_VIDEO_SHARING_ALL_VIDEOS:
@@ -64,20 +65,26 @@ def is_public_sharing_enabled(video_block):
     # ... or can fall back to per-video setting
     # Equivalent to COURSE_VIDEO_SHARING_PER_VIDEO or None / unset
     else:
-        return video_block.public_access
+        return public_access
 
 
 @staticmethod
-def get_course_video_sharing_override(video_block):
+def get_course_video_sharing_override(usage_key: UsageKey):
     """
     Return course video sharing options override or None
+    
+    Args:
+        usage_key: The usage key of the video block
+        
+    Returns:
+        str or None: The course video sharing option or None if not set
     """
-    if not video_block.context_key.is_course:
+    if not usage_key.context_key.is_course:
         return False  # Only courses support this feature (not libraries)
 
     try:
-        course = get_course_by_id(video_block.context_key)
+        course = get_course_by_id(usage_key.context_key)
         return getattr(course, 'video_sharing_options', None)
     except Exception as err:  # pylint: disable=broad-except
-        log.exception(f"Error retrieving course for course ID: {video_block.course_id}")
+        log.exception(f"Error retrieving course for course ID: {usage_key.context_key}")
         return None

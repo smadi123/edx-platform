@@ -262,12 +262,12 @@ class TestVideoPublicAccess(BaseTestVideoXBlock):
         """Test public video url."""
         assert self.block.public_access is True
         with self.mock_feature_toggle(enabled=feature_enabled):
-            assert sharing.is_public_sharing_enabled(self.block) == feature_enabled
+            assert sharing.is_public_sharing_enabled(self.block.location, self.block.public_access) == feature_enabled
 
     def test_is_public_sharing_enabled__not_public(self):
         self.block.public_access = False
         with self.mock_feature_toggle():
-            assert not sharing.is_public_sharing_enabled(self.block)
+            assert not sharing.is_public_sharing_enabled(self.block.location, self.block.public_access)
 
     @patch('openedx.core.djangoapps.video_config.sharing.get_course_video_sharing_override')
     def test_is_public_sharing_enabled_by_course_override(self, mock_course_sharing_override):
@@ -278,7 +278,7 @@ class TestVideoPublicAccess(BaseTestVideoXBlock):
 
         # When I try to determine if public sharing is enabled
         with self.mock_feature_toggle():
-            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block)
+            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block.location, self.block.public_access)
 
         # Then I will get that course value
         self.assertTrue(is_public_sharing_enabled)
@@ -291,7 +291,7 @@ class TestVideoPublicAccess(BaseTestVideoXBlock):
 
         # When I try to determine if public sharing is enabled
         with self.mock_feature_toggle():
-            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block)
+            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block.location, self.block.public_access)
 
         # Then I will get that course value
         self.assertFalse(is_public_sharing_enabled)
@@ -305,7 +305,7 @@ class TestVideoPublicAccess(BaseTestVideoXBlock):
 
         # When I try to determine if public sharing is enabled
         with self.mock_feature_toggle():
-            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block)
+            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block.location, self.block.public_access)
 
         # I will get the per-video value
         self.assertEqual(self.block.public_access, is_public_sharing_enabled)
@@ -318,7 +318,7 @@ class TestVideoPublicAccess(BaseTestVideoXBlock):
 
         # When I try to determine if public sharing is enabled
         with self.mock_feature_toggle():
-            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block)
+            is_public_sharing_enabled = sharing.is_public_sharing_enabled(self.block.location, self.block.public_access)
 
         # I will fall-back to per-video values
         self.assertEqual(self.block.public_access, is_public_sharing_enabled)

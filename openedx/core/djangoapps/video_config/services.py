@@ -38,14 +38,14 @@ class VideoConfigService:
 
         Args:
             video_block: The video XBlock instance
-            course_id: The course identifier
+            course_key: The course identifier
 
         Returns:
             dict: Context dictionary with sharing information, empty if sharing is disabled
         """
         context = {}
 
-        if not sharing.is_public_sharing_enabled(video_block):
+        if not sharing.is_public_sharing_enabled(video_block.location, video_block.public_access):
             return context
 
         public_video_url = sharing.get_public_video_url(video_block.location)
