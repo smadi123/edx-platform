@@ -18,7 +18,7 @@ from path import Path as path
 from pytz import utc
 from xblock.fields import Boolean, Dict, Float, Integer, List, Scope, String
 from openedx.core.djangoapps.video_pipeline.models import VideoUploadsEnabledByDefault
-from openedx.core.djangoapps.video_config.utils import (
+from openedx.core.djangoapps.video_config.sharing import (
     COURSE_VIDEO_SHARING_ALL_VIDEOS,
     COURSE_VIDEO_SHARING_NONE,
     COURSE_VIDEO_SHARING_PER_VIDEO,

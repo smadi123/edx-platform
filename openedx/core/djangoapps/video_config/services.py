@@ -10,7 +10,7 @@ import logging
 
 from opaque_keys.edx.keys import CourseKey, UsageKey
 
-from openedx.core.djangoapps.video_config.utils import VideoSharingUtils
+from openedx.core.djangoapps.video_config import sharing
 from organizations.api import get_course_organization
 
 
@@ -30,7 +30,7 @@ class VideoConfigService:
         """
         Returns the public video url
         """
-        return VideoSharingUtils.get_public_video_url(usage_id)
+        return sharing.get_public_video_url(usage_id)
 
     def get_public_sharing_context(self, video_block, course_key: CourseKey) -> dict:
         """
@@ -45,10 +45,10 @@ class VideoConfigService:
         """
         context = {}
 
-        if not VideoSharingUtils.is_public_sharing_enabled(video_block):
+        if not sharing.is_public_sharing_enabled(video_block):
             return context
 
-        public_video_url = VideoSharingUtils.get_public_video_url(video_block.location)
+        public_video_url = sharing.get_public_video_url(video_block.location)
         context['public_sharing_enabled'] = True
         context['public_video_url'] = public_video_url
 
