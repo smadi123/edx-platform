@@ -1324,7 +1324,7 @@ def load_services_for_studio(runtime, user):
         "settings": SettingsService(),
         "lti-configuration": ConfigurationService(CourseAllowPIISharingInLTIFlag),
         "teams_configuration": TeamsConfigurationService(),
-        "library_tools": LegacyLibraryToolsService(modulestore(), user.id),
+        "library_tools": LegacyLibraryToolsService(modulestore(), user.id)
     }
 
     runtime._services.update(services)  # lint-amnesty, pylint: disable=protected-access
