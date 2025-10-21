@@ -1325,7 +1325,6 @@ def load_services_for_studio(runtime, user):
         "lti-configuration": ConfigurationService(CourseAllowPIISharingInLTIFlag),
         "teams_configuration": TeamsConfigurationService(),
         "library_tools": LegacyLibraryToolsService(modulestore(), user.id),
-        # "video_config": VideoConfigService(),  # Uncomment if video blocks need video_config service in studio
     }
 
     runtime._services.update(services)  # lint-amnesty, pylint: disable=protected-access
