@@ -34,9 +34,6 @@ def is_public_sharing_enabled(usage_key: UsageKey, public_access: bool) -> bool:
     Args:
         usage_key: The usage key of the video block
         public_access: Whether the video block has public access enabled
-
-    Returns:
-        bool: True if public sharing is enabled, False otherwise
     """
     if not usage_key.context_key.is_course:
         return False  # Only courses support this feature (not libraries)
@@ -69,15 +66,9 @@ def is_public_sharing_enabled(usage_key: UsageKey, public_access: bool) -> bool:
 
 
 @staticmethod
-def get_course_video_sharing_override(usage_key: UsageKey):
+def get_course_video_sharing_override(usage_key: UsageKey) -> str | None:
     """
-    Return course video sharing options override or None
-    
-    Args:
-        usage_key: The usage key of the video block
-        
-    Returns:
-        str or None: The course video sharing option or None if not set
+    Return course video sharing options override
     """
     if not usage_key.context_key.is_course:
         return False  # Only courses support this feature (not libraries)
