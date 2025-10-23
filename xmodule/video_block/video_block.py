@@ -20,7 +20,6 @@ from collections import OrderedDict, defaultdict
 from operator import itemgetter
 
 from django.conf import settings
-from django.template.loader import render_to_string
 from edx_django_utils.cache import RequestCache
 from lxml import etree
 from opaque_keys.edx.locator import AssetLocator
