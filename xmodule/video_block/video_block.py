@@ -20,6 +20,7 @@ from collections import OrderedDict, defaultdict
 from operator import itemgetter
 
 from django.conf import settings
+from django.template.loader import render_to_string
 from edx_django_utils.cache import RequestCache
 from lxml import etree
 from opaque_keys.edx.locator import AssetLocator
@@ -30,6 +31,7 @@ from xblock.core import XBlock
 from xblock.fields import ScopeIds
 from xblock.runtime import KvsFieldData
 from xblocks_contrib.video import VideoBlock as _ExtractedVideoBlock
+from xblock.utils.resources import ResourceLoader
 
 from common.djangoapps.xblock_django.constants import ATTR_KEY_REQUEST_COUNTRY_CODE, ATTR_KEY_USER_ID
 from openedx.core.djangoapps.video_config.models import HLSPlaybackEnabledFlag, CourseYoutubeBlockedFlag
@@ -109,6 +111,7 @@ except ImportError:
     BrandingInfoConfig = None
 
 log = logging.getLogger(__name__)
+loader = ResourceLoader("xmodule")
 
 # Make '_' a no-op so we can scrape strings. Using lambda instead of
 #  `django.utils.translation.ugettext_noop` because Django cannot be imported in this file
@@ -119,7 +122,7 @@ EXPORT_IMPORT_STATIC_DIR = 'static'
 
 
 @XBlock.wants('settings', 'completion', 'i18n', 'request_cache')
-@XBlock.needs('mako', 'user')
+@XBlock.needs('user')
 class _BuiltInVideoBlock(
         VideoFields, VideoTranscriptsMixin, VideoStudioViewHandlers, VideoStudentViewHandlers,
         EmptyDataRawMixin, XmlMixin, EditingMixin, XModuleToXBlockMixin,
@@ -244,7 +247,14 @@ class _BuiltInVideoBlock(
         """
         Return the student view.
         """
-        fragment = Fragment(self.get_html(context=context))
+        fragment = Fragment()
+        fragment.add_content(
+            loader.render_django_template(
+                "templates/video_block/video.html",
+                self.get_html(context=context),
+                i18n_service=self.runtime.service(self, "i18n"),
+            )
+        )
         add_css_to_fragment(fragment, 'VideoBlockDisplay.css')
         add_webpack_js_to_fragment(fragment, 'VideoBlockDisplay')
         fragment.initialize_js('Video')
@@ -260,8 +270,13 @@ class _BuiltInVideoBlock(
         """
         Return the studio view.
         """
-        fragment = Fragment(
-            self.runtime.service(self, 'mako').render_cms_template(self.mako_template, self.get_context())
+        fragment = Fragment()
+        fragment.add_content(
+            loader.render_django_template(
+                "templates/video_block/video.html",
+                self.get_context(),
+                i18n_service=self.runtime.service(self, "i18n"),
+            )
         )
         add_css_to_fragment(fragment, 'VideoBlockEditor.css')
         add_webpack_js_to_fragment(fragment, 'VideoBlockEditor')
@@ -278,7 +293,14 @@ class _BuiltInVideoBlock(
             # The new runtime can support anonymous users as fully as regular users:
             return self.student_view(context)
 
-        fragment = Fragment(self.get_html(view=PUBLIC_VIEW, context=context))
+        fragment = Fragment()
+        fragment.add_content(
+            loader.render_django_template(
+                "templates/video_block/video.html",
+                self.get_html(view=PUBLIC_VIEW, context=context),
+                i18n_service=self.runtime.service(self, "i18n"),
+            )
+        )
         add_css_to_fragment(fragment, 'VideoBlockDisplay.css')
         add_webpack_js_to_fragment(fragment, 'VideoBlockMain')
         fragment.initialize_js('Video')
@@ -510,7 +532,7 @@ class _BuiltInVideoBlock(
                 organization=organization
             )
 
-        return self.runtime.service(self, 'mako').render_lms_template('video.html', template_context)
+        return template_context
 
     def get_course_video_sharing_override(self):
         """
@@ -904,7 +926,9 @@ class _BuiltInVideoBlock(
         """
         Extend context by data for transcript basic tab.
         """
-        _context = MakoTemplateBlockBase.get_context(self)
+        _context = {
+            'editable_metadata_fields': self.editable_metadata_fields
+        }
         _context.update({
             'tabs': self.tabs,
             'html_id': self.location.html_id(),  # element_id
