@@ -110,7 +110,7 @@ except ImportError:
     BrandingInfoConfig = None
 
 log = logging.getLogger(__name__)
-loader = ResourceLoader("xmodule")
+loader = ResourceLoader("lms")
 
 # Make '_' a no-op so we can scrape strings. Using lambda instead of
 #  `django.utils.translation.ugettext_noop` because Django cannot be imported in this file
@@ -249,7 +249,7 @@ class _BuiltInVideoBlock(
         fragment = Fragment()
         fragment.add_content(
             loader.render_django_template(
-                "templates/video_block/video.html",
+                "templates/video.html",
                 self.get_html(context=context),
                 i18n_service=self.runtime.service(self, "i18n"),
             )
