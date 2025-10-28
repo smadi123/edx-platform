@@ -29,6 +29,8 @@ aniso8601==10.0.1
     # via
     #   -r requirements/edx/base.txt
     #   edx-tincan-py35
+annotated-doc==0.0.3
+    # via fastapi
 annotated-types==0.7.0
     # via
     #   -r requirements/edx/base.txt
@@ -63,6 +65,7 @@ attrs==25.4.0
     #   edx-ace
     #   jsonschema
     #   lti-consumer-xblock
+    #   openedx-authz
     #   openedx-events
     #   openedx-learning
     #   referencing
@@ -89,7 +92,7 @@ billiard==4.2.2
     # via
     #   -r requirements/edx/base.txt
     #   celery
-bleach[css]==6.2.0
+bleach[css]==6.3.0
     # via
     #   -r requirements/edx/base.txt
     #   edx-enterprise
@@ -100,19 +103,23 @@ bleach[css]==6.2.0
     #   xblock-poll
 boto==2.49.0
     # via -r requirements/edx/base.txt
-boto3==1.40.57
+boto3==1.40.60
     # via
     #   -r requirements/edx/base.txt
     #   django-ses
     #   fs-s3fs
     #   ora2
     #   snowflake-connector-python
-botocore==1.40.57
+botocore==1.40.60
     # via
     #   -r requirements/edx/base.txt
     #   boto3
     #   s3transfer
     #   snowflake-connector-python
+bracex==2.6
+    # via
+    #   -r requirements/edx/base.txt
+    #   wcmatch
 bridgekeeper==0.9
     # via -r requirements/edx/base.txt
 cachecontrol==0.14.3
@@ -129,6 +136,10 @@ camel-converter[pydantic]==5.0.0
     # via
     #   -r requirements/edx/base.txt
     #   meilisearch
+casbin-django-orm-adapter==1.7.0
+    # via
+    #   -r requirements/edx/base.txt
+    #   openedx-authz
 celery==5.5.3
     # via
     #   -c requirements/constraints.txt
@@ -253,6 +264,7 @@ django==5.2.7
     # via
     #   -c requirements/constraints.txt
     #   -r requirements/edx/base.txt
+    #   casbin-django-orm-adapter
     #   django-appconf
     #   django-autocomplete-light
     #   django-celery-results
@@ -312,6 +324,7 @@ django==5.2.7
     #   help-tokens
     #   jsonfield
     #   lti-consumer-xblock
+    #   openedx-authz
     #   openedx-django-pyfs
     #   openedx-django-wiki
     #   openedx-events
@@ -486,6 +499,7 @@ djangorestframework==3.16.1
     #   edx-organizations
     #   edx-proctoring
     #   edx-submissions
+    #   openedx-authz
     #   openedx-forum
     #   openedx-learning
     #   ora2
@@ -517,6 +531,7 @@ edx-api-doc-tools==2.1.0
     # via
     #   -r requirements/edx/base.txt
     #   edx-name-affirmation
+    #   openedx-authz
 edx-auth-backends==4.6.2
     # via -r requirements/edx/base.txt
 edx-bulk-grades==1.2.0
@@ -575,6 +590,7 @@ edx-drf-extensions==10.6.0
     #   edx-when
     #   edxval
     #   enterprise-integrated-channels
+    #   openedx-authz
     #   openedx-learning
 edx-enterprise==6.5.1
     # via
@@ -609,6 +625,7 @@ edx-opaque-keys[django]==3.0.0
     #   edx-when
     #   enterprise-integrated-channels
     #   lti-consumer-xblock
+    #   openedx-authz
     #   openedx-events
     #   openedx-filters
     #   ora2
@@ -687,9 +704,9 @@ execnet==2.1.1
     # via pytest-xdist
 factory-boy==3.3.3
     # via -r requirements/edx/testing.in
-faker==37.11.0
+faker==37.12.0
     # via factory-boy
-fastapi==0.119.1
+fastapi==0.120.1
     # via pact-python
 fastavro==1.12.1
     # via
@@ -1030,7 +1047,10 @@ openedx-atlas==0.7.0
     # via
     #   -r requirements/edx/base.txt
     #   enterprise-integrated-channels
+    #   openedx-authz
     #   openedx-forum
+openedx-authz @ git+https://github.com/openedx/openedx-authz.git@MJG/get-filtered-libs-authz
+    # via -r requirements/edx/base.txt
 openedx-calc==4.0.2
     # via -r requirements/edx/base.txt
 openedx-django-pyfs==3.8.0
@@ -1168,6 +1188,11 @@ pyasn1-modules==0.4.2
     # via
     #   -r requirements/edx/base.txt
     #   google-auth
+pycasbin==2.4.0
+    # via
+    #   -r requirements/edx/base.txt
+    #   casbin-django-orm-adapter
+    #   openedx-authz
 pycodestyle==2.8.0
     # via
     #   -c requirements/constraints.txt
@@ -1438,6 +1463,10 @@ semantic-version==2.10.0
     #   edx-drf-extensions
 shapely==2.1.2
     # via -r requirements/edx/base.txt
+simpleeval==1.0.3
+    # via
+    #   -r requirements/edx/base.txt
+    #   pycasbin
 simplejson==3.20.2
     # via
     #   -r requirements/edx/base.txt
@@ -1509,7 +1538,7 @@ sqlparse==0.5.3
     #   django
 staff-graded-xblock==3.1.0
     # via -r requirements/edx/base.txt
-starlette==0.48.0
+starlette==0.49.1
     # via fastapi
 stevedore==5.5.0
     # via
@@ -1546,7 +1575,7 @@ tomlkit==0.13.3
     #   openedx-learning
     #   pylint
     #   snowflake-connector-python
-tox==4.31.0
+tox==4.32.0
     # via -r requirements/edx/testing.in
 tqdm==4.67.1
     # via
@@ -1623,6 +1652,10 @@ walrus==0.9.5
     # via
     #   -r requirements/edx/base.txt
     #   edx-event-bus-redis
+wcmatch==10.1
+    # via
+    #   -r requirements/edx/base.txt
+    #   pycasbin
 wcwidth==0.2.14
     # via
     #   -r requirements/edx/base.txt
