@@ -1,19 +1,17 @@
-<%page expression_filter="h" args="notification_name, notification_type, notification_icon,
-                                   notification_message, should_enable_next_hint, is_hidden=True"/>
-<%! from django.utils.translation import gettext as _ %>
+{% load i18n %}
 
-<div class="notification ${notification_type} ${'notification-'}${notification_name}
-      ${'' if not is_hidden else 'is-hidden' }"
+<div class="notification {{ notification_type }} notification-{{ notification_name }}
+      {% if not is_hidden %}{% else %}is-hidden{% endif %}"
      tabindex="-1">
-    <span class="icon fa ${notification_icon}" aria-hidden="true"></span>
-    <span class="notification-message" aria-describedby="${ short_id }-problem-title">${notification_message}
+    <span class="icon fa {{ notification_icon }}" aria-hidden="true"></span>
+    <span class="notification-message" aria-describedby="{{  short_id  }}-problem-title">{{ notification_message }}
     </span>
     <div class="notification-btn-wrapper">
-        % if notification_name == 'hint':
+        {% if notification_name == 'hint' %}
         <button type="button" class="btn btn-default btn-small notification-btn hint-button">
-          ${_('Next Hint')}
+          {% trans "Next Hint" %}
         </button>
-        % endif
-        <button type="button" class="btn btn-default btn-small notification-btn review-btn sr">${_('Review')}</button>
+        {% endif %}
+        <button type="button" class="btn btn-default btn-small notification-btn review-btn sr">{% trans "Review" %}</button>
     </div>
 </div>
