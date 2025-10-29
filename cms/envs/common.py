@@ -311,6 +311,7 @@ BRANCH_IO_KEY = ''
 
 ######################## GOOGLE ANALYTICS ###########################
 GOOGLE_ANALYTICS_ACCOUNT = None
+GOOGLE_ANALYTICS_4_ID = None
 
 ######################## HOTJAR ###########################
 HOTJAR_ID = 00000

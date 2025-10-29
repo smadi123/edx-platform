@@ -11,7 +11,6 @@ from io import BytesIO
 
 from calc import UndefinedVariable
 from django.template.loader import get_template
-from path import Path as path
 
 from xmodule.capa.capa_problem import LoncapaProblem
 

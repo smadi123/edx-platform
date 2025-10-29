@@ -10,7 +10,6 @@ from unittest.mock import MagicMock, Mock
 
 import fs.osfs
 from django.template.loader import get_template as django_get_template
-from path import Path
 
 from xmodule.capa.capa_problem import LoncapaProblem, LoncapaSystem
 from xmodule.capa.inputtypes import Status
